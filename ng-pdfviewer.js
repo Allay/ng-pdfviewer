@@ -1,7 +1,7 @@
 /**
  * @preserve AngularJS PDF viewer directive using pdf.js.
  *
- * https://github.com/akrennmair/ng-pdfviewer 
+ * https://github.com/akrennmair/ng-pdfviewer
  *
  * MIT license
  */
@@ -54,18 +54,29 @@ directive('pdfviewer', [ '$parse', function($parse) {
 					var viewport = page.getViewport($scope.scale);
 					var ctx = canvas.getContext('2d');
 
-					canvas.height = viewport.height;
-					canvas.width = viewport.width;
+					//Outer Box
+					var clientWidth = canvas.clientWidth;
 
-					page.render({ canvasContext: ctx, viewport: viewport }).then(
-						function() { 
+					//Figure out scale
+					var scale = clientWidth/viewport.width;
+					var newViewport = page.getViewport(scale);
+
+
+
+					canvas.height = newViewport.height;
+					canvas.width = newViewport.width;
+					// canvas.height = viewport.height;
+					// canvas.width = viewport.width;
+
+					page.render({ canvasContext: ctx, viewport: newViewport }).then(
+						function() {
 							if (callback) {
 								callback(true);
 							}
 							$scope.$apply(function() {
 								$scope.onPageLoad({ page: $scope.pageNum, total: $scope.pdfDoc.numPages });
 							});
-						}, 
+						},
 						function() {
 							if (callback) {
 								callback(false);
