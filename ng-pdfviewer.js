@@ -17,14 +17,13 @@ directive('pdfviewer', [ '$parse', function($parse) {
 		scope: {
 			onPageLoad: '&',
 			loadProgress: '&',
-			docScal: '@',
 			src: '@',
 			id: '='
 		},
 		controller: [ '$scope', function($scope) {
 			$scope.pageNum = 1;
 			$scope.pdfDoc = null;
-			$scope.docScal = 5.0;
+			$scope.scale = 5.0;
 
 			$scope.documentProgress = function(progressData) {
 				if ($scope.loadProgress) {
@@ -52,8 +51,9 @@ directive('pdfviewer', [ '$parse', function($parse) {
 			$scope.renderPage = function(num, callback) {
 				console.log('renderPage ', num);
 				$scope.pdfDoc.getPage(num).then(function(page) {
-					var viewport = page.getViewport($scope.docScal);
+					var viewport = page.getViewport($scope.scale);
 					var ctx = canvas.getContext('2d');
+
 
 					canvas.height = viewport.height;
 					canvas.width = viewport.width;
