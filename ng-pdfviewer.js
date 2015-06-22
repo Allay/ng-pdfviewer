@@ -23,7 +23,7 @@ directive('pdfviewer', [ '$parse', function($parse) {
 		controller: [ '$scope', function($scope) {
 			$scope.pageNum = 1;
 			$scope.pdfDoc = null;
-			$scope.scale = 5.0;
+			$scope.scale = 3.0;
 
 			$scope.documentProgress = function(progressData) {
 				if ($scope.loadProgress) {
