@@ -18,12 +18,18 @@ directive('pdfviewer', [ '$parse', function($parse) {
 			onPageLoad: '&',
 			loadProgress: '&',
 			src: '@',
-			id: '='
+			id: '=',
+			baseScale: '='
 		},
 		controller: [ '$scope', function($scope) {
 			$scope.pageNum = 1;
 			$scope.pdfDoc = null;
-			$scope.scale = 3.0;
+			if (angular.isDefined($scope.baseScale)) {
+				$scope.scale = $scope.baseScale;
+			} else {
+				$scope.scale = 3.0;
+			}
+
 
 			$scope.documentProgress = function(progressData) {
 				if ($scope.loadProgress) {
