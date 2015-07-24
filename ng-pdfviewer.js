@@ -127,7 +127,7 @@ directive('pdfviewer', [ '$parse', function($parse) {
 
 				$scope.pdfDoc.getPage(num).then(function(page) {
             		page.getAnnotations().then(function(annotations) {
-						callback(annotations, $scope.pdfDoc.height);
+						callback(annotations, page);
 					});
 			});
 
