@@ -23,6 +23,8 @@ directive('pdfviewer', [ '$parse', function($parse) {
 		},
 		controller: [ '$scope', function($scope) {
 			$scope.pageNum = 1;
+
+
 			$scope.pdfDoc = null;
 			if (angular.isDefined($scope.baseScale)) {
 				$scope.scale = $scope.baseScale;
@@ -117,6 +119,21 @@ directive('pdfviewer', [ '$parse', function($parse) {
 					$scope.renderPage($scope.pageNum);
 				}
 			});
+
+			$scope.$on('pdfviewer.getAnnotations', function(evt, id, num, callback) {
+				if (id !== instance_id) {
+					return;
+				}
+
+				$scope.pdfDoc.getPage(num).then(function(page) {
+            		page.getAnnotations().then(function(annotations) {
+						callback(annotations, $scope.pdfDoc.height);
+					});
+			});
+
+
+        });
+
 		} ],
 		link: function(scope, iElement, iAttr) {
 			canvas = iElement.find('canvas')[0];
@@ -155,7 +172,10 @@ service("PDFViewerService", [ '$rootScope', function($rootScope) {
 			},
 			gotoPage: function(page) {
 				$rootScope.$broadcast('pdfviewer.gotoPage', instance_id, page);
-			}
+			},
+			getAnnotations: function(num, callback) {
+				$rootScope.$broadcast('pdfviewer.getAnnotations', instance_id, num, callback);
+			},
 		};
 	};
 
