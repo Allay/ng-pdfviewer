@@ -127,7 +127,7 @@ directive('pdfviewer', [ '$parse', function($parse) {
 
 				$scope.pdfDoc.getPage(num).then(function(page) {
             		page.getAnnotations().then(function(annotations) {
-
+            			var viewport = page.getViewport(1);
             			for(var i = 0; i< annotations.length; i++) {
             				annotations[i]['scaledRect'] = PDFJS.Util.normalizeRect(viewport.convertToViewportRectangle(annotations[i].rect));
             			}
